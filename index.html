@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://unpkg.com/vue@3"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Vue/php</title>
+</head>
+<body>
+ 
+<div id="app">
+    
+    <div class="header"><h1>{{ header || 'Welcome' }}</h1></div>
+    
+    <!-- <ul>
+        <li v-for="toDo in todos" v-bind:key="toDo">{{ toDo }}</li>
+    </ul> -->
+
+    <p>{{ textDemo }}</p>
+
+    <form v-on:submit.prevent="get">
+        <input type="text" maxlength="15" v-model="text" placeholder="type any name here..."> &nbsp;{{ textCount }}/15
+        <br>
+         <br>
+        <input type="submit" value="Get">
+    </form>
+<hr>
+    <form v-on:submit.prevent="post">
+        <input type="text" maxlength="15" v-model="fullName" placeholder="type any name here..."> &nbsp;{{ fullNameCount }}/15
+        <br>
+         <br>
+        <input type="submit" value="Post">
+    </form>
+    
+<hr style="border: 1px solid black;">
+
+<button class="btn btn-primary" v-on:click="loadJson">Load JSON</button>
+<br>
+<p v-if="filledList === true" v-for="(list, index) in lists" :key="list.id">
+    Number: {{ index }} <br> 
+    Full name: {{ list.FullName }} <br>
+    Mobile number: {{ list.MobileNumber }} <br>
+    email:  {{ list.Email }} <br>
+    Registration:  {{ list.RegDate }}
+</p>
+<p v-else-if="lists.length === 0" style="color: red;">{{errorMsg}}</p>
+
+</div> 
+
+<script>
+ var App = Vue.createApp({
+     data() {
+         return {
+             header: "",
+             textDemo: null,
+             text: "",
+             fullName: "",
+             lists: [],
+             filledList: false,
+             errorMsg: null,
+         }
+     },
+     computed:{
+       textCount(){
+        return this.text.length;
+       },
+       fullNameCount(){
+        return this.fullName.length;
+       }
+     },
+     methods: {
+       get() {
+        const ref = this;
+        const ajax = new XMLHttpRequest();
+        ajax.onload = function() {
+            ref.textDemo = this.responseText;
+            ref.text = '';
+            }
+        ajax.open("GET", "get_res.php?q="+this.text);
+        ajax.send();
+       },
+       post() {
+        const ref = this;
+        const ajax = new XMLHttpRequest();
+        ajax.onload = function() {
+            ref.textDemo = this.responseText;
+            ref.fullName = '';
+        }
+        ajax.open("POST", "res.php");
+        ajax.setRequestHeader("content-type","application/x-www-form-urlencoded");
+        ajax.send("fullName="+this.fullName+"&site=vue.js");//or new FormData(this). FormData object is used to get all form input data
+      },
+      loadJson() {
+        const ref = this;	
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.onload = function() {
+        const res = JSON.parse(this.responseText);
+
+        if (res.error != null) {
+        ref.errorMsg = "Error: "+res.error;
+        }
+        else{ 
+        ref.filledList = true;
+        ref.lists = res;
+        }
+
+        // console.log("Object length: "+res.length);
+        console.log(res);
+
+        }
+        xmlhttp.open("GET", "get_json.php");
+        xmlhttp.send();
+        },
+     },
+     mounted() {
+        this.header = "Vue php AJAX";
+     },
+ })
+ .mount('#app');
+</script>
+</body>
+</html>
