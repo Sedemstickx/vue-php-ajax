@@ -80,3 +80,6 @@
   .priority{
     font-weight: bolder;
   }
+  [v-cloak] {
+    display: none !important;
+  }

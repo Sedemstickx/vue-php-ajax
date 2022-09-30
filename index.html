@@ -6,13 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Latest compiled and minified CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://unpkg.com/vue@3"></script>
     <link rel="stylesheet" href="style.css">
     <title>Vue/php</title>
 </head>
 <body>
  
-<div id="app">
+<div id="app" v-cloak>
     
     <div class="header"><h1>{{ header || 'Welcome' }}</h1></div>
     
@@ -40,8 +39,8 @@
 
 <button class="btn btn-primary" v-on:click="loadJson">Load JSON</button>
 <br>
-<p v-if="filledList === true" v-for="(list, index) in lists" :key="list.id">
-    Number: {{ index }} <br> 
+<p v-if="filledList === true" v-for="(list, i) in lists" :key="list.id">
+    Number: {{ i }} <br> 
     Full name: {{ list.FullName }} <br>
     Mobile number: {{ list.MobileNumber }} <br>
     email:  {{ list.Email }} <br>
@@ -51,6 +50,7 @@
 
 </div> 
 
+<script src="https://unpkg.com/vue@3"></script>
 <script src="app.js"></script>
 </body>
 </html>
