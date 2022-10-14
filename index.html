@@ -39,14 +39,14 @@
 
 <button class="btn btn-primary" v-on:click="loadJson">Load JSON</button>
 <br>
-<p v-if="filledList === true" v-for="(list, i) in lists" :key="list.id">
+<p  v-for="(list, i) in lists" :key="list.id">
     Number: {{ i }} <br> 
     Full name: {{ list.FullName }} <br>
     Mobile number: {{ list.MobileNumber }} <br>
     email:  {{ list.Email }} <br>
     Registration:  {{ list.RegDate }}
 </p>
-<p v-else-if="lists.length === 0" style="color: red;">{{errorMsg}}</p>
+<p v-if="lists.length === 0" style="color: red;">{{errorMsg}}</p>
 
 </div> 
 

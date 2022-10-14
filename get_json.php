@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // Establish database connection.
-$dbconn = mysqli_connect('localhost', 'root', '', 'vacation_booking');// db credentials
+$dbconn = mysqli_connect('localhost', 'root', '', 'vms');// db credentials
 
 if (!$dbconn) {
     //if connection is unsuccessful show connection error.
@@ -10,7 +10,7 @@ if (!$dbconn) {
 }
 
 
-$sql = "SELECT * from customers";
+$sql = "SELECT * from users";
 $result = mysqli_query($dbconn,$sql);//run sql query with selected db connection
 if(mysqli_num_rows($result) > 0)//if number of db table rows are more than 0 display the list
 {
