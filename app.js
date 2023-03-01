@@ -20,50 +20,55 @@ var App = Vue.createApp({
   },
   methods: {
     get() {
-     const ref = this;
-     const ajax = new XMLHttpRequest();
-     ajax.onload = function() {
-         ref.textDemo = this.responseText;
-         ref.text = '';
-         }
-     ajax.open("GET", "get_res.php?q="+this.text);
-     ajax.send();
+     fetch ("get_res.php?q="+this.text)
+    .then((response) => response.text())
+    .then((data) => {
+      this.textDemo = data;
+      this.text = '';
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
     },
     post() {
-     const ref = this;
-     const ajax = new XMLHttpRequest();
-     ajax.onload = function() {
-         ref.textDemo = this.responseText;
-         ref.fullName = '';
-     }
-     ajax.open("POST", "res.php");
-     ajax.setRequestHeader("content-type","application/x-www-form-urlencoded");
-     ajax.send("fullName="+this.fullName+"&site=vue.js");//or new FormData(this). FormData object is used to get all form input data
+     fetch ("res.php", {
+      method: "POST",
+      body: JSON.stringify({fullName: this.fullName, site: 'vue.js'}),
+      headers: {'Content-Type': 'application/json'},
+     })
+     .then((response) => response.json())
+     .then((data) => {
+       this.textDemo = data;
+       this.fullName = '';
+     })
+     .catch((error) => {
+       console.error("Error:", error);
+     })
    },
    loadJson() {
-     const ref = this;	
-     const xmlhttp = new XMLHttpRequest();
-     xmlhttp.onload = function() {
-     const res = JSON.parse(this.responseText);
+     fetch ("get_json.php")
+     .then((response) => response.json())
+     .then((data) => {
 
-     if (res.error != null) {
-     ref.errorMsg = "Error: "+res.error;
-     }
-     else{ 
-     ref.filledList = true;
-     ref.lists = res;
-     }
-
-     // console.log("Object length: "+res.length);
-     console.log(res);
-
-     }
-     xmlhttp.open("GET", "get_json.php");
-     xmlhttp.send();
+      //Check if the response has an error
+      if (data.error != null) {
+        this.errorMsg = "Error: "+data.error;
+        }
+        else{ 
+        this.filledList = true;
+        this.lists = data;//get data list
+        }
+   
+        // console.log("Object length: "+data.length);
+        console.log(data);
+     })
+     .catch((error) => {
+       console.error("Error:", error);
+     })
      },
   },
   mounted() {
-     this.header = "Vue php AJAX";
+     this.header = "Vue, php and the FETCH api";
   },
 })
 .mount('#app');

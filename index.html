@@ -22,17 +22,17 @@
     <p>{{ textDemo }}</p>
 
     <form v-on:submit.prevent="get">
-        <input type="text" maxlength="15" v-model="text" placeholder="type any name here..."> &nbsp;{{ textCount }}/15
+        <input type="text" maxlength="15" class="form-control" v-model="text" placeholder="type any name here..."> &nbsp;{{ textCount }}/15
         <br>
          <br>
-        <input type="submit" value="Get">
+        <input type="submit" class="btn btn-success" value="Get">
     </form>
 <hr>
     <form v-on:submit.prevent="post">
-        <input type="text" maxlength="15" v-model="fullName" placeholder="type any name here..."> &nbsp;{{ fullNameCount }}/15
+        <input type="text" maxlength="15" class="form-control" v-model="fullName" placeholder="type any name here..."> &nbsp;{{ fullNameCount }}/15
         <br>
          <br>
-        <input type="submit" value="Post">
+        <input type="submit" class="btn btn-danger" value="Post">
     </form>
     
 <hr style="border: 1px solid black;">
@@ -40,7 +40,7 @@
 <button class="btn btn-primary" v-on:click="loadJson">Load JSON</button>
 <br>
 <p  v-for="(list, i) in lists" :key="list.id">
-    Number: {{ i }} <br> 
+    Number: {{ i+1 }} <br> 
     Full name: {{ list.FullName }} <br>
     Mobile number: {{ list.MobileNumber }} <br>
     email:  {{ list.Email }} <br>
